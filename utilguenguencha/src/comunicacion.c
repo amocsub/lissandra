@@ -293,7 +293,7 @@ void servidor_comunicacion(Comunicacion *comunicacion){
 			if (FD_ISSET(aux1, &fd_set_temporal)) {
 				if (aux1 == server_socket) {
 					struct sockaddr_in client_address;
-					size_t tamanio_client_address = sizeof(client_address);
+					socklen_t tamanio_client_address = sizeof(client_address);
 					int socket_cliente = accept(server_socket, (struct sockaddr *) &client_address, &tamanio_client_address);
 					if (socket_cliente < 0) {
 						log_error(LOG_ERROR, "Error levantando un socket para cliente");
@@ -856,7 +856,7 @@ void empaquetar_gossip(t_paquete * paquete, Gossip * gossip) {
 Select *desempaquetar_select(void* stream) {
 	int desplazamiento = 0;
 	Select *select = malloc(sizeof(Select));
-	int tamanio;
+	size_t tamanio;
 	memcpy(&select->key, stream, sizeof(select->key));
 	desplazamiento += sizeof(select->key);
 	memcpy(&tamanio, stream + desplazamiento, sizeof(size_t));

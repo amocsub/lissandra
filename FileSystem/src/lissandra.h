@@ -38,7 +38,7 @@ struct lfsConfig{
 	char*directorio_bloques;
 	char*directorio_metadata;
 };
-struct lfsConfig global_conf;
+extern struct lfsConfig global_conf;
 void global_conf_load(t_config* conf);
 void global_conf_update(t_config* conf);
 void global_conf_destroy(void);
@@ -84,10 +84,10 @@ struct dumpTableList{
 };
 
 /* Global Variables*/
-t_list* global_memtable;
-t_list* global_table_metadata;
-pthread_mutex_t memtableMutex;
-pthread_mutex_t tableMetadataMutex;
+extern t_list* global_memtable;
+extern t_list* global_table_metadata;
+extern pthread_mutex_t memtableMutex;
+extern pthread_mutex_t tableMetadataMutex;
 
 /* Thread Compactacion */
 void *TH_compactacion(void* p);

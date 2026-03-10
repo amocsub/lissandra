@@ -1,5 +1,16 @@
 #include "utils.h"
 
+t_log * LOG_INFO;
+t_log * LOG_ERROR;
+t_log * LOG_DEBUG;
+t_log * LOG_OUTPUT;
+t_log * LOG_ERROR_SV;
+t_log * LOG_OUTPUT_SV;
+char* PATH_CONFIG;
+t_dictionary *fd_disponibles;
+t_list *fd_desafectados;
+char LOCAL_IP[16];
+
 void configure_logger() {
 	signal(SIGPIPE, handler);
 	LOG_INFO = log_create("log_info.log","tp-lissandra", 0, LOG_LEVEL_INFO);

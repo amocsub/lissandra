@@ -1,5 +1,28 @@
 #include "poolMemory.h"
 
+char* PUERTO_DE_ESCUCHA;
+char* IP_FS;
+char* PUERTO_FS;
+char** IP_SEEDS;
+char** PUERTOS_SEEDS;
+uint32_t RETARDO_MEM;
+uint32_t RETARDO_FS;
+uint32_t RETARDO_JOURNAL;
+uint32_t RETARDO_GOSSIPING;
+
+int SIZE_MEM;
+int NUMERO_MEMORIA;
+int MAX_VAL;
+
+void* MEMORIA_PRINCIPAL;
+t_list* L_MARCOS;
+t_list* L_SEGMENTOS;
+t_list* L_MEMORIAS;
+t_list* L_SEEDS;
+
+pthread_mutex_t mutexMarcos, mutexSegmentos, mutexMemorias, mutexListaGossip;
+pthread_rwlock_t lock_journal;
+
 int main(int argc, char* argv[]) {
 
 	pthread_mutex_init(&mutexMarcos, NULL);

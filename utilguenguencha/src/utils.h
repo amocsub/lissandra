@@ -23,15 +23,15 @@
 
 #define EVENT_SIZE (sizeof (struct inotify_event))
 #define EVENT_BUF_LEN (1024*(EVENT_SIZE + 16))
-t_log * LOG_INFO;
-t_log * LOG_ERROR;
-t_log * LOG_DEBUG;
-t_log * LOG_OUTPUT;
-t_log * LOG_ERROR_SV;
-t_log * LOG_OUTPUT_SV;
-char* PATH_CONFIG;
-t_dictionary *fd_disponibles;
-t_list *fd_desafectados;
+extern t_log * LOG_INFO;
+extern t_log * LOG_ERROR;
+extern t_log * LOG_DEBUG;
+extern t_log * LOG_OUTPUT;
+extern t_log * LOG_ERROR_SV;
+extern t_log * LOG_OUTPUT_SV;
+extern char* PATH_CONFIG;
+extern t_dictionary *fd_disponibles;
+extern t_list *fd_desafectados;
 void configure_logger(void);
 void exit_gracefully(int error);
 char *consistencia2string(Consistencias consistencia);
@@ -39,7 +39,7 @@ int string2consistencia(char* consistencia);
 int monitorNode(char * node,int mode,int(*callback)(void));
 void eliminar_y_cerrar_fd_abiertos(int * fd);
 void print_guenguencha(char* quien_soy);
-char LOCAL_IP[16];
+extern char LOCAL_IP[16];
 void handler(int s);
 char *get_local_ip(void);
 Memoria *duplicar_memoria(Memoria *memoria);

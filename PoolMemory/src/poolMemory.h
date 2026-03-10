@@ -8,31 +8,31 @@
 
 // Variables globales del proceso
 
-char* PUERTO_DE_ESCUCHA;
-char* IP_FS;
-char* PUERTO_FS;
-char** IP_SEEDS;
-char** PUERTOS_SEEDS;
-uint32_t RETARDO_MEM;
-uint32_t RETARDO_FS;
-uint32_t RETARDO_JOURNAL;
-uint32_t RETARDO_GOSSIPING;
+extern char* PUERTO_DE_ESCUCHA;
+extern char* IP_FS;
+extern char* PUERTO_FS;
+extern char** IP_SEEDS;
+extern char** PUERTOS_SEEDS;
+extern uint32_t RETARDO_MEM;
+extern uint32_t RETARDO_FS;
+extern uint32_t RETARDO_JOURNAL;
+extern uint32_t RETARDO_GOSSIPING;
 
-int SIZE_MEM;
-int NUMERO_MEMORIA;
-int MAX_VAL;
+extern int SIZE_MEM;
+extern int NUMERO_MEMORIA;
+extern int MAX_VAL;
 
-void* MEMORIA_PRINCIPAL; //puntero a malloc gigante
+extern void* MEMORIA_PRINCIPAL; //puntero a malloc gigante
 //int PAGINAS_MODIFICADAS; //contador de paginas modificadas, para simplificar el memory_full
 //int PAGINAS_USADAS;		 //contador de paginas en uso
-t_list* L_MARCOS;		 //lista de "marcos" de la memoria
-t_list* L_SEGMENTOS;	 //lista de segmentos, cada segmento tiene su lista de paginas
-t_list* L_MEMORIAS;
-t_list* L_SEEDS;
+extern t_list* L_MARCOS;		 //lista de "marcos" de la memoria
+extern t_list* L_SEGMENTOS;	 //lista de segmentos, cada segmento tiene su lista de paginas
+extern t_list* L_MEMORIAS;
+extern t_list* L_SEEDS;
 
 
-pthread_mutex_t mutexMarcos, mutexSegmentos, mutexMemorias, mutexListaGossip;
-pthread_rwlock_t lock_journal;
+extern pthread_mutex_t mutexMarcos, mutexSegmentos, mutexMemorias, mutexListaGossip;
+extern pthread_rwlock_t lock_journal;
 
 //  estructuras
 typedef struct{

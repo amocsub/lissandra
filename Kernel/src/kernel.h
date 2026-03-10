@@ -22,11 +22,11 @@
 #include "../../utilguenguencha/src/utils.h"
 
 
-int READS, WRITES;
-double WRITE_LAT, READ_LAT;
-t_list* MEM_LOAD;
+extern int READS, WRITES;
+extern double WRITE_LAT, READ_LAT;
+extern t_list* MEM_LOAD;
 
-t_log * LOGGER_METRICS;
+extern t_log * LOGGER_METRICS;
 
 typedef struct{
 	Instruccion* instruccion;
@@ -48,8 +48,8 @@ typedef struct {
 	int cantidad_instrucciones;
 }AcumuladorMemoria;
 
-pthread_mutex_t mutexRecursosCompartidos;
-sem_t semaforoSePuedePlanificar, semaforoNewToReady, semaforoFinalizar;
+extern pthread_mutex_t mutexRecursosCompartidos;
+extern sem_t semaforoSePuedePlanificar, semaforoNewToReady, semaforoFinalizar;
 
 // Funciones del proceso
 void configuracion_inicial(void);
@@ -99,37 +99,37 @@ void desasignar_bajas(t_list* lista_vieja);
 
 
 // Variables del proceso
-t_list *estadoReady;
-t_list *estadoNew;
-t_list *estadoExit;
+extern t_list *estadoReady;
+extern t_list *estadoNew;
+extern t_list *estadoExit;
 
 // tablas del proceso
-t_list *acum30sMetrics;
-t_dictionary * metrics;
+extern t_list *acum30sMetrics;
+extern t_dictionary * metrics;
 
-char * IP_MEMORIA_PPAL;
-char* PUERTO_MEMORIA_PPAL;
-int QUANTUM;
-int MULTIPROCESAMIENTO;
-uint32_t REFRESH_METADATA;
-uint32_t RETARDO;
-int TAMANO_MAXIMO_LECTURA_ARCHIVO;
-int HILOS_KERNEL;
-int SEGUNDOS_METRICS;
-int PREGUNTAR_POR_MEMORIAS;
-int TIEMPO_DESCRIBE;
+extern char * IP_MEMORIA_PPAL;
+extern char* PUERTO_MEMORIA_PPAL;
+extern int QUANTUM;
+extern int MULTIPROCESAMIENTO;
+extern uint32_t REFRESH_METADATA;
+extern uint32_t RETARDO;
+extern int TAMANO_MAXIMO_LECTURA_ARCHIVO;
+extern int HILOS_KERNEL;
+extern int SEGUNDOS_METRICS;
+extern int PREGUNTAR_POR_MEMORIAS;
+extern int TIEMPO_DESCRIBE;
 
-t_list *lista_ec;
-t_list *lista_sc;
-t_list *lista_shc;
-t_list *lista_disp;
+extern t_list *lista_ec;
+extern t_list *lista_sc;
+extern t_list *lista_shc;
+extern t_list *lista_disp;
 
-pthread_mutex_t mutex_disp;
-pthread_mutex_t mutex_sc;
-pthread_mutex_t mutex_ec;
-pthread_mutex_t mutex_shc;
+extern pthread_mutex_t mutex_disp;
+extern pthread_mutex_t mutex_sc;
+extern pthread_mutex_t mutex_ec;
+extern pthread_mutex_t mutex_shc;
 
-pthread_mutex_t mutex_metrics;
+extern pthread_mutex_t mutex_metrics;
 
 /*
 	Describes
@@ -141,8 +141,8 @@ typedef struct {
 
 
 
-t_list * lista_de_tablas;
-pthread_mutex_t lista_de_tablas_mx;
+extern t_list * lista_de_tablas;
+extern pthread_mutex_t lista_de_tablas_mx;
 void realizarDescribeGeneral(void);
 
 #endif /* KERNEL_H_ */

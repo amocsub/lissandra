@@ -1,5 +1,47 @@
 #include "kernel.h"
 
+int READS, WRITES;
+double WRITE_LAT, READ_LAT;
+t_list* MEM_LOAD;
+t_log * LOGGER_METRICS;
+
+pthread_mutex_t mutexRecursosCompartidos;
+sem_t semaforoSePuedePlanificar, semaforoNewToReady, semaforoFinalizar;
+
+t_list *estadoReady;
+t_list *estadoNew;
+t_list *estadoExit;
+
+t_list *acum30sMetrics;
+t_dictionary * metrics;
+
+char * IP_MEMORIA_PPAL;
+char* PUERTO_MEMORIA_PPAL;
+int QUANTUM;
+int MULTIPROCESAMIENTO;
+uint32_t REFRESH_METADATA;
+uint32_t RETARDO;
+int TAMANO_MAXIMO_LECTURA_ARCHIVO;
+int HILOS_KERNEL;
+int SEGUNDOS_METRICS;
+int PREGUNTAR_POR_MEMORIAS;
+int TIEMPO_DESCRIBE;
+
+t_list *lista_ec;
+t_list *lista_sc;
+t_list *lista_shc;
+t_list *lista_disp;
+
+pthread_mutex_t mutex_disp;
+pthread_mutex_t mutex_sc;
+pthread_mutex_t mutex_ec;
+pthread_mutex_t mutex_shc;
+
+pthread_mutex_t mutex_metrics;
+
+t_list * lista_de_tablas;
+pthread_mutex_t lista_de_tablas_mx;
+
 // Hay que definirla ya que no tiene definición en kernel y sino rompería, de todos modos no se usa
 void retornarControl(Instruccion *instruccion, int socket_cliente){};
 

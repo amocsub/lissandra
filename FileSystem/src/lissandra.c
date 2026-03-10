@@ -1,5 +1,11 @@
 #include "lissandra.h"
 
+struct lfsConfig global_conf;
+t_list* global_memtable;
+t_list* global_table_metadata;
+pthread_mutex_t memtableMutex;
+pthread_mutex_t tableMetadataMutex;
+
 void *TH_confMonitor(void * p);
 void *TH_dump(void* p);
 void *TH_server(void * p);
