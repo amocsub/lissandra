@@ -17,6 +17,7 @@ t_dictionary * metrics;
 
 char * IP_MEMORIA_PPAL;
 char* PUERTO_MEMORIA_PPAL;
+char* SCRIPT_INICIO = NULL;
 int QUANTUM;
 int MULTIPROCESAMIENTO;
 uint32_t REFRESH_METADATA;
@@ -81,6 +82,10 @@ int main(int argc, char* argv[])  {
 
 	pthread_create(&memoriasDisponibles, NULL, (void*) lanzar_gossiping, NULL);
 	pthread_detach(memoriasDisponibles);
+
+	pthread_t T_auto_setup;
+	pthread_create(&T_auto_setup, NULL, TH_auto_setup, NULL);
+	pthread_detach(T_auto_setup);
 
 	pthread_create(&T_describe, NULL, TH_describe, NULL);
 	pthread_detach(T_describe);
@@ -273,4 +278,25 @@ void finalizar_procesos(void){
 		Proceso * proceso = desencolar(estadoExit);
 		free(proceso);
 	}
+}
+
+void TH_auto_setup(void* p) {
+	if (SCRIPT_INICIO == NULL) return;
+
+	/* Esperar a que el gossip haya poblado lista_disp */
+	int count = 0;
+	do {
+		sleep(1);
+		pthread_mutex_lock(&mutex_disp);
+		count = lista_disp->elements_count;
+		pthread_mutex_unlock(&mutex_disp);
+	} while (count == 0);
+
+	/* Dar tiempo extra para que todos los nodos terminen de gossipar */
+	sleep(2);
+
+	char cmd[512];
+	snprintf(cmd, sizeof(cmd), "RUN %s", SCRIPT_INICIO);
+	log_info(LOG_INFO, "Auto-setup: ejecutando %s", cmd);
+	retorno_consola(cmd);
 }

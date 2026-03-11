@@ -37,15 +37,12 @@ case "$CMD" in
         echo ""
         echo "Sistema levantado."
         echo ""
-        echo "IMPORTANTE: antes de usar el sistema hay que asignar memorias."
-        echo "Espera ~15 segundos a que el gossip propague las memorias, luego:"
+        echo "El Kernel asignara las memorias automaticamente."
+        echo "Espera ~15 segundos y luego conectate a la consola:"
         echo ""
         echo "  ./lissandra.sh $SCENARIO attach"
         echo ""
-        echo "  Y dentro de la consola LQL del Kernel ejecuta:"
-        echo "  RUN /scripts/setup_${SCENARIO}.lql"
-        echo ""
-        echo "  Recien despues podras hacer CREATE, INSERT, SELECT, etc."
+        echo "  Desde ahi podras hacer CREATE, INSERT, SELECT, etc."
         ;;
     down)
         echo "Bajando Lissandra..."
@@ -61,9 +58,6 @@ case "$CMD" in
     attach)
         echo "Conectando a la consola LQL del Kernel..."
         echo "(Para desconectarse sin matar el proceso: Ctrl+P, Ctrl+Q)"
-        echo ""
-        echo "Recordatorio: si es la primera vez, ejecuta primero:"
-        echo "  RUN /scripts/setup_${SCENARIO}.lql"
         echo ""
         docker attach lissandra-kernel-1
         ;;

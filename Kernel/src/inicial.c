@@ -42,6 +42,14 @@ void configuracion_inicial(void) {
 	//RETARDO
 	RETARDO = config_get_int_value_check(CONFIG, "RETARDO");
 
+	/* SCRIPT_INICIO es opcional: si está definido, se ejecuta automáticamente
+	   al arrancar, luego de que el gossip pueble lista_disp. */
+	if (config_has_property(CONFIG, "SCRIPT_INICIO")) {
+		char *script = config_get_string_value(CONFIG, "SCRIPT_INICIO");
+		SCRIPT_INICIO = malloc(strlen(script) + 1);
+		strcpy(SCRIPT_INICIO, script);
+	}
+
 	config_destroy(CONFIG);
 
 	acum30sMetrics = list_create();

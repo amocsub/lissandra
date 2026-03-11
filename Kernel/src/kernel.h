@@ -67,6 +67,7 @@ void ejecutar();
 void iniciarEstructurasAsociadas();
 Instruccion * dameSiguiente(char * path, int numeroInstruccion);
 void lanzar_gossiping();
+void TH_auto_setup(void* p);
 void newToReady();
 void logicaCreate(Proceso * proceso);
 void logicaRun(Proceso * proceso);
@@ -109,6 +110,7 @@ extern t_dictionary * metrics;
 
 extern char * IP_MEMORIA_PPAL;
 extern char* PUERTO_MEMORIA_PPAL;
+extern char* SCRIPT_INICIO;
 extern int QUANTUM;
 extern int MULTIPROCESAMIENTO;
 extern uint32_t REFRESH_METADATA;
