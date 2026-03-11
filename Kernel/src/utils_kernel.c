@@ -165,7 +165,7 @@ Memoria *get_memoria(int idMemoria, Consistencias consistencia){
 	pthread_mutex_unlock(&mutex);
 	int aux = 0;
 	Memoria *mem;
-	while((mem = list_get(lista, aux)) != NULL){
+	while(aux < lista->elements_count && (mem = list_get(lista, aux)) != NULL){
 		if(mem->idMemoria == idMemoria){
 			Memoria* retorno = duplicar_memoria(mem);
 			list_destroy_and_destroy_elements(lista, (void*)eliminar_memoria);
@@ -181,7 +181,7 @@ Memoria *get_memoria(int idMemoria, Consistencias consistencia){
 bool existe_memoria_en(Memoria *mem1, t_list* lista){
 		int aux = 0;
 		Memoria * mem2;
-		while((mem2 = list_get(lista, aux)) != NULL){
+		while(aux < lista->elements_count && (mem2 = list_get(lista, aux)) != NULL){
 	       	if(strcmp(mem1->ip, mem2->ip) == 0 && strcmp(mem1->puerto, mem2->puerto) == 0){
                	return true;
 	       	}

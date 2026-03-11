@@ -109,14 +109,30 @@ void print_guenguencha(char* quien_soy){
 }
 
 char *get_local_ip(void){
-	int fd;
-	struct ifreq ifr;
-	fd = socket(AF_INET, SOCK_DGRAM, 0);
-	ifr.ifr_addr.sa_family = AF_INET;
-	memcpy(ifr.ifr_name, "enp0s3", IFNAMSIZ-1);
-	ioctl(fd, SIOCGIFADDR, &ifr);
+	// Use UDP trick: connect to external addr (no data sent) to discover local IP
+	int fd = socket(AF_INET, SOCK_DGRAM, 0);
+	if (fd < 0) {
+		strcpy(LOCAL_IP, "127.0.0.1");
+		return LOCAL_IP;
+	}
+	struct sockaddr_in addr;
+	memset(&addr, 0, sizeof(addr));
+	addr.sin_family = AF_INET;
+	addr.sin_port = htons(80);
+	inet_pton(AF_INET, "8.8.8.8", &addr.sin_addr);
+	if (connect(fd, (struct sockaddr *)&addr, sizeof(addr)) < 0) {
+		close(fd);
+		strcpy(LOCAL_IP, "127.0.0.1");
+		return LOCAL_IP;
+	}
+	socklen_t addr_len = sizeof(addr);
+	if (getsockname(fd, (struct sockaddr *)&addr, &addr_len) < 0) {
+		close(fd);
+		strcpy(LOCAL_IP, "127.0.0.1");
+		return LOCAL_IP;
+	}
 	close(fd);
-	strcpy(LOCAL_IP,inet_ntoa(((struct sockaddr_in *)&ifr.ifr_addr)->sin_addr));
+	inet_ntop(AF_INET, &addr.sin_addr, LOCAL_IP, sizeof(LOCAL_IP));
 	return LOCAL_IP;
 }
 

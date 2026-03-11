@@ -837,7 +837,7 @@ void lanzar_gossiping(void){
 		aux = 0;
 
 		int cantidad = L_MEMORIAS->elements_count;
-		m = list_get(L_MEMORIAS, aux);
+		m = (aux < L_MEMORIAS->elements_count) ? list_get(L_MEMORIAS, aux) : NULL;
 
 		if(m != NULL) {
 			mem = duplicar_memoria(m);
@@ -850,7 +850,7 @@ void lanzar_gossiping(void){
 			aux++;
 			eliminar_memoria(mem);
 
-			m = list_get(L_MEMORIAS, aux);
+			m = (aux < L_MEMORIAS->elements_count) ? list_get(L_MEMORIAS, aux) : NULL;
 
 			if(m != NULL) {
 				mem = duplicar_memoria(m);
@@ -873,7 +873,7 @@ t_list* filtrar_memorias_gossipear(void){
 
 	t_list *copia_memorias = list_duplicate_all(L_MEMORIAS, (void*)duplicar_memoria, mutexListaGossip);
 
-	Memoria *m1 = list_get(copia_memorias, aux);
+	Memoria *m1 = (aux < copia_memorias->elements_count) ? list_get(copia_memorias, aux) : NULL;
 
 	bool filtrar(Memoria *m2){
 		return strcmp(m1->ip, m2->ip) == 0 && strcmp(m1->puerto, m2->puerto) == 0;
@@ -890,7 +890,7 @@ t_list* filtrar_memorias_gossipear(void){
 			}
 		}
 		aux++;
-		m1 = list_get(copia_memorias, aux);
+		m1 = (aux < copia_memorias->elements_count) ? list_get(copia_memorias, aux) : NULL;
 	}
 
 	list_destroy_and_destroy_elements(copia_memorias, (void*)eliminar_memoria);
@@ -1102,7 +1102,7 @@ int seleccionar_marco(void){
 		int posicion = 0;
 		Marco* marco;
 
-		while((marco = list_get(L_MARCOS, posicion))!=NULL){
+		while(posicion < L_MARCOS->elements_count && (marco = list_get(L_MARCOS, posicion))!=NULL){
 			if(!pagina_en_uso(marco)){
 				break;
 			} else {

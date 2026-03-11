@@ -111,7 +111,7 @@ void logicaAdd(Proceso * proceso){
 		pthread_mutex_lock(&mutex_shc);
 		Memoria * memoria = NULL;
 		int aux = 0;
-		memoria = list_get(lista_shc, aux);
+		memoria = (aux < lista_shc->elements_count) ? list_get(lista_shc, aux) : NULL;
 		t_timestamp initial_time;
 		Instruccion * instruccionRespuesta;
 		while(memoria != NULL){
@@ -140,7 +140,7 @@ void logicaAdd(Proceso * proceso){
 			}
 			free_retorno(instruccionRespuesta);
 			aux++;
-			memoria = list_get(lista_shc, aux);
+			memoria = (aux < lista_shc->elements_count) ? list_get(lista_shc, aux) : NULL;
 		}
 		pthread_mutex_unlock(&mutex_shc);
 	}
@@ -347,7 +347,7 @@ void logicaJournal(Proceso *proceso){
 		mutex = dame_mutex_de_consistencia(consistencia);
 		pthread_mutex_lock(&mutex);
 		lista = dame_lista_de_consistencia(consistencia);
-		memoria = list_get(lista, aux);
+		memoria = (aux < lista->elements_count) ? list_get(lista, aux) : NULL;
 		while(memoria != NULL){
 			Instruccion * instruccion = malloc(sizeof(Instruccion));
 			instruccion->instruccion = JOURNAL;
@@ -373,7 +373,7 @@ void logicaJournal(Proceso *proceso){
 			}
 			free_retorno(instruccionRespuesta);
 			aux++;
-			memoria = list_get(lista, aux);
+			memoria = (aux < lista->elements_count) ? list_get(lista, aux) : NULL;
 		}
 		pthread_mutex_unlock(&mutex);
 		list_destroy_and_destroy_elements(lista, (void*)eliminar_memoria);

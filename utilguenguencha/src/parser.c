@@ -742,7 +742,7 @@ void leer_por_consola(void (*f)(char*)) {
 
 	leido = readline(">>");
 
-	while (!string_equals_ignore_case(leido, "EXIT")) {
+	while (leido != NULL && !string_equals_ignore_case(leido, "EXIT")) {
 		if(!string_equals_ignore_case(leido, "\n")){
 			add_history(leido);
 			f(leido);
@@ -751,6 +751,10 @@ void leer_por_consola(void (*f)(char*)) {
 		leido = readline("\n>>");
 	}
 
+	if (leido == NULL) {
+		// EOF on stdin (e.g. /dev/null): exit console thread silently, keep others running
+		return;
+	}
 	free(leido);
 	exit_gracefully(EXIT_SUCCESS);
 }

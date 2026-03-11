@@ -943,9 +943,10 @@ Gossip *desempaquetar_gossip(void* stream){
 	int desplazamiento = 0;
 	Gossip *gossip = malloc(sizeof(Gossip));
 	gossip->lista_memorias = list_create();
-	size_t cantidad_memorias, tamanio;
-	memcpy(&cantidad_memorias, stream, sizeof(cantidad_memorias));
-	desplazamiento += sizeof(cantidad_memorias);
+	int cantidad_memorias;
+	size_t tamanio;
+	memcpy(&cantidad_memorias, stream, sizeof(int));
+	desplazamiento += sizeof(int);
 	while(cantidad_memorias != 0){
 		Memoria *memoria = malloc(sizeof(Memoria));
 		memcpy(&tamanio, stream + desplazamiento, sizeof(tamanio));
@@ -1122,7 +1123,7 @@ Instruccion *armar_retorno_describe(void *chunk){
 	int desplazamiento = 0;
 	size_t cantidad_describes, valor;
 	memcpy(&cantidad_describes, chunk, sizeof(size_t));
-	desplazamiento += sizeof(int);
+	desplazamiento += sizeof(size_t);
 	Describes *describes = malloc(sizeof(Describes));
 	describes->lista_describes = list_create();
 	while(cantidad_describes > 0){
