@@ -1,0 +1,108 @@
+# Lissandra - TP Sistemas Operativos 2019/1C
+# "Lo Compilaste Todo Chinguenguencha"
+#
+# Uso:
+#   SCENARIO=base       docker compose --profile base       up
+#   SCENARIO=kernel-test docker compose --profile kernel-test up
+#   SCENARIO=lfs        docker compose --profile lfs        up
+#   SCENARIO=memoria    docker compose --profile memoria    up
+#   SCENARIO=stress     docker compose --profile stress     up
+#
+# Para interactuar con el Kernel (consola LQL):
+#   docker attach lissandra-kernel-1
+#   (Ctrl+C para salir sin matar el proceso: Ctrl+P, Ctrl+Q)
+
+name: lissandra
+
+x-base: &base
+  build:
+    context: .
+    dockerfile: Dockerfile
+  restart: "no"
+  networks:
+    - lissandra-net
+
+# ---------------------------------------------------------------------------
+# FileSystem — unico, todos los escenarios
+# ---------------------------------------------------------------------------
+services:
+  filesystem:
+    <<: *base
+    profiles: [base, kernel-test, lfs, memoria, stress]
+    environment:
+      SCENARIO: ${SCENARIO:-base}
+      LFS_DIR: /lfs
+    volumes:
+      - ./docker/configs/${SCENARIO:-base}/filesystem:/config:ro
+      - lfs-data:/lfs
+    entrypoint: ["/lissandra/docker/entrypoints/filesystem.sh"]
+
+# ---------------------------------------------------------------------------
+# Kernel — unico, todos los escenarios; consola interactiva via docker attach
+# ---------------------------------------------------------------------------
+  kernel:
+    <<: *base
+    profiles: [base, kernel-test, lfs, memoria, stress]
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./docker/configs/${SCENARIO:-base}/kernel:/config:ro
+      - ./deploy/scripts:/scripts:ro
+    entrypoint: ["/lissandra/docker/entrypoints/kernel.sh"]
+    depends_on:
+      - memory1
+
+# ---------------------------------------------------------------------------
+# Nodos de PoolMemory — se activan segun el escenario
+# ---------------------------------------------------------------------------
+  memory1:
+    <<: *base
+    profiles: [base, kernel-test, lfs, memoria, stress]
+    volumes:
+      - ./docker/configs/${SCENARIO:-base}/memory1:/config:ro
+    entrypoint: ["/lissandra/docker/entrypoints/memory.sh"]
+    depends_on:
+      - filesystem
+
+  memory2:
+    <<: *base
+    profiles: [base, kernel-test, lfs, stress]
+    volumes:
+      - ./docker/configs/${SCENARIO:-base}/memory2:/config:ro
+    entrypoint: ["/lissandra/docker/entrypoints/memory.sh"]
+    depends_on:
+      - filesystem
+
+  memory3:
+    <<: *base
+    profiles: [kernel-test, lfs, stress]
+    volumes:
+      - ./docker/configs/${SCENARIO:-base}/memory3:/config:ro
+    entrypoint: ["/lissandra/docker/entrypoints/memory.sh"]
+    depends_on:
+      - filesystem
+
+  memory4:
+    <<: *base
+    profiles: [kernel-test, stress]
+    volumes:
+      - ./docker/configs/${SCENARIO:-base}/memory4:/config:ro
+    entrypoint: ["/lissandra/docker/entrypoints/memory.sh"]
+    depends_on:
+      - filesystem
+
+  memory5:
+    <<: *base
+    profiles: [stress]
+    volumes:
+      - ./docker/configs/${SCENARIO:-base}/memory5:/config:ro
+    entrypoint: ["/lissandra/docker/entrypoints/memory.sh"]
+    depends_on:
+      - filesystem
+
+networks:
+  lissandra-net:
+    driver: bridge
+
+volumes:
+  lfs-data:

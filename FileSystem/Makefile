@@ -1,8 +1,8 @@
 # -*-MakeFile-*-
 
-FLAGS := -Wall -g
-
-LIBS := -pthread -lcommons -lreadline
+FLAGS    := -Wall -g
+INCLUDES := -I../utilguenguencha/vendor
+LIBS     := -pthread -lreadline
 
 utilguenguencha_path := ../utilguenguencha/
 
@@ -20,11 +20,11 @@ dir:
 .SILENT: fileSystem
 fileSystem: src/*.* utilguenguencha
 	echo "\nSe inicia compilacion del FileSystem"
-	gcc src/*.c $(utilguenguencha_path)Release/*.o $(FLAGS) $(LIBS) -o Release/fileSystem
+	gcc src/*.c $(utilguenguencha_path)Release/*.o $(FLAGS) $(INCLUDES) $(LIBS) -o Release/fileSystem
 	echo "Se compilo correctamente el FileSystem"
 
 fileSystem_general: src/*.*
-	gcc src/*.c $(utilguenguencha_path)Release/*.o $(FLAGS) $(LIBS) -o Release/fileSystem
+	gcc src/*.c $(utilguenguencha_path)Release/*.o $(FLAGS) $(INCLUDES) $(LIBS) -o Release/fileSystem
 
 .PHONY: utilguenguencha
 .SILENT: utilguenguencha

@@ -1,8 +1,8 @@
 # -*-MakeFile-*-
 
-FLAGS := -Wall -g
-
-LIBS := -pthread -lcommons -lreadline
+FLAGS    := -Wall -g
+INCLUDES := -I../utilguenguencha/vendor
+LIBS     := -pthread -lreadline
 
 utilguenguencha_path := ../utilguenguencha/
 
@@ -20,12 +20,12 @@ dir:
 .SILENT: kernel
 kernel: src/*.* utilguenguencha
 	echo "\nSe inicia compilacion del Kernel"
-	gcc src/*.c $(utilguenguencha_path)Release/*.o $(FLAGS) $(LIBS) -o Release/kernel
+	gcc src/*.c $(utilguenguencha_path)Release/*.o $(FLAGS) $(INCLUDES) $(LIBS) -o Release/kernel
 	echo "Se compilo correctamente el Kernel"
 
 .SILENT: kernel_general
 kernel_general: src/*.*
-	gcc src/*.c $(utilguenguencha_path)Release/*.o $(FLAGS) $(LIBS) -o Release/kernel
+	gcc src/*.c $(utilguenguencha_path)Release/*.o $(FLAGS) $(INCLUDES) $(LIBS) -o Release/kernel
 
 .PHONY: utilguenguencha
 .SILENT: utilguenguencha
@@ -37,4 +37,4 @@ utilguenguencha:
 .SILENT: clean
 clean:
 	rm -rf Release Debug */logger.log
-	echo "Se hizo clean Kernel"	
+	echo "Se hizo clean Kernel"
