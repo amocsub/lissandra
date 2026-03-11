@@ -36,6 +36,12 @@ services:
       - ./docker/configs/${SCENARIO:-base}/filesystem:/config:ro
       - lfs-data:/lfs
     entrypoint: ["/lissandra/docker/entrypoints/filesystem.sh"]
+    healthcheck:
+      test: ["CMD-SHELL", "bash -c 'echo > /dev/tcp/localhost/5003' 2>/dev/null && echo ok"]
+      interval: 2s
+      timeout: 3s
+      retries: 20
+      start_period: 5s
 
 # ---------------------------------------------------------------------------
 # Kernel — unico, todos los escenarios; consola interactiva via docker attach
@@ -62,7 +68,8 @@ services:
       - ./docker/configs/${SCENARIO:-base}/memory1:/config:ro
     entrypoint: ["/lissandra/docker/entrypoints/memory.sh"]
     depends_on:
-      - filesystem
+      filesystem:
+        condition: service_healthy
 
   memory2:
     <<: *base
@@ -71,7 +78,8 @@ services:
       - ./docker/configs/${SCENARIO:-base}/memory2:/config:ro
     entrypoint: ["/lissandra/docker/entrypoints/memory.sh"]
     depends_on:
-      - filesystem
+      filesystem:
+        condition: service_healthy
 
   memory3:
     <<: *base
@@ -80,7 +88,8 @@ services:
       - ./docker/configs/${SCENARIO:-base}/memory3:/config:ro
     entrypoint: ["/lissandra/docker/entrypoints/memory.sh"]
     depends_on:
-      - filesystem
+      filesystem:
+        condition: service_healthy
 
   memory4:
     <<: *base
@@ -89,7 +98,8 @@ services:
       - ./docker/configs/${SCENARIO:-base}/memory4:/config:ro
     entrypoint: ["/lissandra/docker/entrypoints/memory.sh"]
     depends_on:
-      - filesystem
+      filesystem:
+        condition: service_healthy
 
   memory5:
     <<: *base
@@ -98,7 +108,8 @@ services:
       - ./docker/configs/${SCENARIO:-base}/memory5:/config:ro
     entrypoint: ["/lissandra/docker/entrypoints/memory.sh"]
     depends_on:
-      - filesystem
+      filesystem:
+        condition: service_healthy
 
 networks:
   lissandra-net:

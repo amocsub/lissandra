@@ -554,12 +554,26 @@ Connection *crear_conexion(char *ip, char* puerto) {
 	        return NULL;
 	    }
 	    bzero(&servaddr, sizeof(servaddr));
-
 	    servaddr.sin_family = AF_INET;
-	    servaddr.sin_addr.s_addr = inet_addr(ip);
+
+	    /* Resolucion de hostname o IP numerica via getaddrinfo
+	     * (inet_addr solo acepta IPs en formato "a.b.c.d") */
+	    struct addrinfo hints, *res;
+	    memset(&hints, 0, sizeof(hints));
+	    hints.ai_family   = AF_INET;
+	    hints.ai_socktype = SOCK_STREAM;
+	    if (getaddrinfo(ip, NULL, &hints, &res) != 0) {
+	        close(sockfd);
+	        pthread_mutex_destroy(&conn->mutex);
+	        free(conn);
+	        return NULL;
+	    }
+	    servaddr.sin_addr = ((struct sockaddr_in*)res->ai_addr)->sin_addr;
 	    servaddr.sin_port = htons(atoi(puerto));
+	    freeaddrinfo(res);
 
 	    if (connect(sockfd, (struct sockaddr*)&servaddr, sizeof(servaddr)) != 0) {
+			close(sockfd);
 			pthread_mutex_destroy(&conn->mutex);
 			free(conn);
 	        return NULL;

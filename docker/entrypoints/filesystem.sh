@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 set -e
 
 LFS_DIR=${LFS_DIR:-/lfs}
