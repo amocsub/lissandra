@@ -23,7 +23,7 @@ void configure_logger() {
 
 void exit_gracefully(int exit_code){
 	if(exit_code == EXIT_FAILURE){
-		log_error(LOG_ERROR,strerror(errno));
+		log_error(LOG_ERROR,"%s",strerror(errno));
 	}
 	else{
 		log_info(LOG_INFO,"Proceso termino correctamente");

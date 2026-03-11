@@ -65,11 +65,12 @@ int crearMetadataTableFile(char*directorio,struct TableMetadata tableMeta){
 	char*PATH = malloc(strlen(directorio)+13+1);
 	sprintf(PATH,"%s/Metadata.txt",directorio);
 	FILE *pf = txt_open_for_append(PATH);
-	free(PATH);
 	if (pf == NULL){
 		log_error(LOG_ERROR_SV,"Error al abrir el archivo '%s', %s",PATH,strerror(errno));
+		free(PATH);
 		return FILE_OPEN_ERROR;
 	}
+	free(PATH);
 	char * data = makeMetadataTableString(tableMeta);
 	txt_write_in_file(pf, data);
 	txt_close_file(pf);
